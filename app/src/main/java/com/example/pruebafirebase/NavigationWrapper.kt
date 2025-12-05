@@ -4,57 +4,42 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.modeloPrueba.PantallaInicio
-import com.example.pruebafirebase.Presentation.home.HomeClientScreen
-import com.example.pruebafirebase.Presentation.home.HomeManagerScreen
-import com.example.pruebafirebase.Presentation.home.HomeScreen
-import com.example.pruebafirebase.Presentation.initial.InitialScreen
-import com.example.pruebafirebase.Presentation.initial.InitialScreen2
-import com.example.pruebafirebase.Presentation.login.LoginScreen
-import com.example.pruebafirebase.Presentation.signUp.SignUpScreen
+import com.example.pruebafirebase.presentation.initial.InitialScreen
+import com.example.pruebafirebase.presentation.signUp.PantallaRegistro
+import com.example.pruebafirebase.presentation.home.add.AddScreen
+import com.example.pruebafirebase.presentation.home.options.OptionsScreen
+import com.example.pruebafirebase.presentation.home.HomeManagerScreen
+import com.example.pruebafirebase.presentation.home.PantallaHome
 import com.google.firebase.auth.FirebaseAuth
 
+// Para manejar los navegadores
 @Composable
 fun NavigationWrapper(
     navHostController: NavHostController,
     auth: FirebaseAuth
 ) {
-    NavHost(navController = navHostController, startDestination = "pantallaInicioPrueba") {
-        composable("initial") {
+    NavHost(navController = navHostController, startDestination = "initialScreen") {
+        composable("initialScreen") {
             InitialScreen(
-                navigateToLogin = { navHostController.navigate("logIn") },
-                navigateToSignUp = { navHostController.navigate("signUp") }
-            )
-        }
-        composable("login") {
-            LoginScreen(
                 auth,
-                navigateToHome = { navHostController.navigate("homeClient") },
-                navigateToInitial = { navHostController.navigate("initial") })
+                navigateToHomeManager = { navHostController.navigate("homeScreenAdmin") },
+                navigateToHomeClient = { navHostController.navigate("homeScreen") },
+                navigateToRegister = {navHostController.navigate("registerScreen")})
         }
-        composable("signUp") {
-            SignUpScreen(auth)
+        composable("registerScreen"){
+            PantallaRegistro(auth, navigateBack = {navHostController.popBackStack()})
         }
-        composable("home"){
-            HomeScreen()
+        composable("homeScreen"){
+            PantallaHome(navigateToInitialScreen = { navHostController.navigate("initialScreen") }, navigateToOptions = {navHostController.navigate("optionsScreen")})
         }
-        composable("homeManager") {
-            HomeManagerScreen(auth) { navHostController.navigate("initial2") }
+        composable("homeScreenAdmin"){
+            HomeManagerScreen(navigateToInitialScreen = { navHostController.navigate("initialScreen") }, navigateToOptions = {navHostController.navigate("optionsScreen")})
         }
-        composable("homeClient") {
-            HomeClientScreen(auth) { navHostController.navigate("initial2") }
+        composable("addScreen"){
+            AddScreen()
         }
-        composable("initial2") {
-            InitialScreen2(
-                auth,
-                navigateToHomeManager = { navHostController.navigate("homeManager") },
-                navigateToHomeClient = { navHostController.navigate("homeClient") })
-        }
-        composable("pantallaInicioPrueba"){
-            PantallaInicio(
-                auth,
-                navigateToHomeManager = { navHostController.navigate("homeManager") },
-                navigateToHomeClient = { navHostController.navigate("homeClient") })
+        composable("optionsScreen"){
+            OptionsScreen(onBack = {navHostController.navigate("homeScreen")})
         }
     }
 }

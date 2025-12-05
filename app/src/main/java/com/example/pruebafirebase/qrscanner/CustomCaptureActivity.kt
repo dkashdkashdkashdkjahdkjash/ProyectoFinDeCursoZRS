@@ -1,7 +1,7 @@
-package com.example.pruebafirebase
+package com.example.pruebafirebase.qrscanner
 
 import com.journeyapps.barcodescanner.CaptureActivity
 
 class CustomCaptureActivity:CaptureActivity() {
-    // Solo sirve para fijar vertical en la cámara
+    // Para fijar vertical en la cámara
 }
