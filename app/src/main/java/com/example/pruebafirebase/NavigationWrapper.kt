@@ -39,7 +39,7 @@ fun NavigationWrapper(
             AddScreen()
         }
         composable("optionsScreen"){
-            OptionsScreen(onBack = {navHostController.navigate("homeScreen")})
+            OptionsScreen(onBack = {navHostController.popBackStack()})
         }
     }
 }
